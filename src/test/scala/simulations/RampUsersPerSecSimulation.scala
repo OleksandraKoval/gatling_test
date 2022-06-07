@@ -1,18 +1,14 @@
 package simulations
 
-import ch.qos.logback.classic.{Level, LoggerContext}
 import io.gatling.core.Predef._
-import io.gatling.core.scenario.Simulation
 import io.gatling.http.Predef._
-import org.slf4j.LoggerFactory
+import api.WikiApi.wikiConfig
 
 import scala.concurrent.duration._
 
 
 class RampUsersPerSecSimulation extends Simulation {
 
-  private val config = http.baseUrl("https://wikipedia.org")
-    .header("Connection", value = "keep-alive")
 
   val csvFeeder = csv("data/data.csv").circular
 
@@ -29,5 +25,5 @@ class RampUsersPerSecSimulation extends Simulation {
 
   val test = scenario("get wiki search result page").exec(getResultOfWikiSearch())
 
-  setUp(test.inject(rampUsersPerSec(100).to(200).during(5.minutes))).protocols(config)
+  setUp(test.inject(rampUsersPerSec(100).to(200).during(5.minutes))).protocols(wikiConfig)
 }

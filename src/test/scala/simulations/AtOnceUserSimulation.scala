@@ -1,16 +1,10 @@
 package simulations
 
 import io.gatling.core.Predef._
-import io.gatling.core.scenario.Simulation
 import io.gatling.http.Predef._
+import api.WikiApi.wikiConfig
 
 class AtOnceUserSimulation extends Simulation {
-
-  //config
-  private val config = http.baseUrl("https://en.wikipedia.org")
-    .header("Accept", value = "application/json")
-    .header("Content-type", value = "application/json")
-
 
   //scenario
   private val test =
@@ -24,5 +18,5 @@ class AtOnceUserSimulation extends Simulation {
         .queryParam("authAction", "login").check(status is 200))
 
   //set up
-  setUp(test.inject(atOnceUsers(Integer.parseInt(System.getProperty("userCount"))))).protocols(config)
+  setUp(test.inject(atOnceUsers(Integer.parseInt(System.getProperty("userCount"))))).protocols(wikiConfig)
 }
